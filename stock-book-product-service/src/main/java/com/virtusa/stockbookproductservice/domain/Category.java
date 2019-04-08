@@ -12,20 +12,21 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="category")
+@Table(name = "category")
 
 public class Category {
 
-	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
 	private Long id;
-	
-	@Column(name="name")
+
+	@Column(name = "name")
 	private String name;
 
 	@OneToMany(mappedBy = "category")
 	private List<Product> products;
-	
+
 	public Long getId() {
 		return id;
 	}
@@ -50,15 +51,29 @@ public class Category {
 		this.products = products;
 	}
 
-	// support for bi-directional link
-	public void add(Product product)
-	{
-		if(products!=null)
-			products =  new ArrayList<Product>();
-		
-		products.add(product);
-		
-		product.setCategory(this);
+//constructors
+	public Category() {
+
+	}
+
+// field constructor	
+	public Category(String name, List<Product> products) {
+		this.name = name;
+		this.products = products;
+	}
+
+	public Category(String name) {
+		this.name = name;
 	}
 	
+	// support for bi-directional link
+	public void add(Product product) {
+		if (products != null)
+			products = new ArrayList<Product>();
+
+		products.add(product);
+
+		product.setCategory(this);
+	}
+
 }

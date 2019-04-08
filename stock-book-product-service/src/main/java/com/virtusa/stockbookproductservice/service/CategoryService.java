@@ -48,7 +48,7 @@ public class CategoryService {
 	}
 	
 	//get list of saved category
-	public List<Category> getAllCategory()
+	public List<Category> getAllCategories()
 	{
 		return categoryRepository.findAll();
 	}
