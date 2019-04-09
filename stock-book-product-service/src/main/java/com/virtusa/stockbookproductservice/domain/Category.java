@@ -5,12 +5,17 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+/**
+ * @author shshubham
+ *
+ */
 @Entity
 @Table(name = "category")
 
@@ -24,7 +29,7 @@ public class Category {
 	@Column(name = "name")
 	private String name;
 
-	@OneToMany(mappedBy = "category")
+	@OneToMany(mappedBy = "category",fetch=FetchType.EAGER)
 	private List<Product> products;
 
 	public Long getId() {
@@ -66,6 +71,18 @@ public class Category {
 		this.name = name;
 	}
 	
+	public Category(Long id,String name) {
+		this.name = name;
+		this.id= id;
+	}
+	
+	
+	
+	@Override
+	public String toString() {
+		return "Category [id=" + id + ", name=" + name + ", products=" + products + "]";
+	}
+
 	// support for bi-directional link
 	public void add(Product product) {
 		if (products != null)

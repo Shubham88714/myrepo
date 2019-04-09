@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
 
 import com.virtusa.stockbookproductservice.domain.Category;
 import com.virtusa.stockbookproductservice.domain.Product;
@@ -27,13 +28,25 @@ public class ProductService {
 		
 		Optional<Category> optCategory =  categoryRespositoty.findById(product.getCategory().getId());
 		
-		if(optCategory!=null)
+		if(optCategory.isPresent())
 		{
 			theCategory = optCategory.get();
 			theCategory.add(product);
 			theProduct = productRepository.save(product);
 		}
 		
+		return theProduct;
+	}
+	
+	
+	public Product getProductById(Long id)
+	{
+		Product theProduct = null;
+		Optional<Product> optProduct = productRepository.findById(id);
+		if(optProduct.isPresent())
+		{
+			theProduct = optProduct.get();
+		}
 		return theProduct;
 	}
 	

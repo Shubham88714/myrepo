@@ -3,6 +3,7 @@ package com.virtusa.stockbookproductservice.service;
 import java.util.List;
 import java.util.Optional;
 
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,58 +13,70 @@ import com.virtusa.stockbookproductservice.repository.ICategoryRepository;
 @Service
 public class CategoryService {
 
+	
+	
 	@Autowired
 	ICategoryRepository categoryRepository;
 
-	//save
+	// save
 	public Category saveCategory(Category category) {
 		return categoryRepository.save(category);
 	}
 
-	//delete by id
+	// delete by id
 	public Category deleteCategory(Long id) {
 		Category theCategory = null;
 		Optional<Category> optCategory = categoryRepository.findById(id);
-
-		if (optCategory != null) {
+		if (optCategory.isPresent()) {
 			theCategory = optCategory.get();
+			
 			categoryRepository.delete(theCategory);
 		}
+	
 		return theCategory;
 	}
 
-	//update by id
-	public Category updateCategory(Category category)
-	{
+	// update by id
+	public Category updateCategory(Category category) {
 		Category theCategory = null;
 		Optional<Category> optCategory = categoryRepository.findById(category.getId());
 
-		if (optCategory != null) {
+		if (optCategory.isPresent()) {
 			theCategory = optCategory.get();
 			theCategory.setName(category.getName());
-			
+
 			return categoryRepository.save(theCategory);
 		}
 		return theCategory;
 	}
-	
-	//get list of saved category
-	public List<Category> getAllCategories()
-	{
+
+	// get list of saved category
+	public List<Category> getAllCategories() {
 		return categoryRepository.findAll();
 	}
-	
-	//get list by id
-	public Category getCategoryById(Long id)
-	{
+
+	// get list by id
+	public Category getCategoryById(Long id) {
 		Category theCategory = null;
 		Optional<Category> optCategory = categoryRepository.findById(id);
 
-		if (optCategory != null) {
+		if (optCategory.isPresent()) {
 			theCategory = optCategory.get();
 		}
 		return theCategory;
 	}
-	
+
+	public Category updateCategoryById(Long id,Category category) {
+		Category theCategory = null;
+		Optional<Category> optCategory = categoryRepository.findById(id);
+
+		if (optCategory.isPresent()) {
+			theCategory = optCategory.get();
+			theCategory.setName(category.getName());
+			categoryRepository.save(theCategory);
+		}
+		
+		return theCategory;
+	}
 
 }

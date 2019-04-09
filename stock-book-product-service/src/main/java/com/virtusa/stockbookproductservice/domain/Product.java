@@ -2,6 +2,7 @@ package com.virtusa.stockbookproductservice.domain;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -13,18 +14,29 @@ import javax.persistence.Table;
 @Table(name = "product")
 public class Product {
 
-	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+	public Product(String name, String description, Category category) {
+
+		this.name = name;
+		this.description = description;
+		this.category = category;
+	}
+
+	public Product() {
+	}
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
 	private Long id;
-	
+
 	@Column(name = "name")
 	private String name;
-	
+
 	@Column(name = "description")
 	private String description;
-	
-	@ManyToOne
-	@JoinColumn(name="category_id")
+
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name = "category_id")
 	private Category category;
 
 	public Long getId() {
@@ -58,7 +70,10 @@ public class Product {
 	public void setCategory(Category category) {
 		this.category = category;
 	}
-	
-	
-	
+
+	@Override
+	public String toString() {
+		return "Product [id=" + id + ", name=" + name + ", description=" + description + ", category=" + category + "]";
+	}
+
 }

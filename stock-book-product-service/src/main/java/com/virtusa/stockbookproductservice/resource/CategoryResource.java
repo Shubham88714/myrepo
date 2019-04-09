@@ -11,8 +11,10 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.virtusa.stockbookproductservice.domain.Category;
@@ -27,7 +29,7 @@ public class CategoryResource {
 	
 	//save 
 	@PostMapping("/category")
-	public ResponseEntity<Category> saveCategory(@RequestBody  Category category) throws URISyntaxException
+	public ResponseEntity<String> saveCategory(@RequestBody  Category category) throws URISyntaxException
 	{
 		Category theCategory = categoryService.saveCategory(category);
 		if(theCategory!=null)
@@ -37,15 +39,28 @@ public class CategoryResource {
 			return ResponseEntity.badRequest().build();
 	}
 	
+	//get by id
+	@GetMapping("/category/{id}")
+	public ResponseEntity<Category> getCategoryById(@PathVariable("id") Long id)
+	{
+		Category theCategory = categoryService.getCategoryById(id);
+		if(theCategory!=null)
+			return new ResponseEntity<Category>(theCategory,HttpStatus.OK);
+		else
+			return new ResponseEntity<Category>(theCategory,HttpStatus.BAD_REQUEST);
+	}
+	
+	
 	//delete
 	@DeleteMapping("/category/{id}") 
+	@ResponseBody
 	public ResponseEntity<Category> deleteCategory(@PathVariable("id") Long id)
 	{
 		Category theCategory = categoryService.deleteCategory(id);
 		if(theCategory!=null)
 			return new ResponseEntity<Category>(theCategory,HttpStatus.OK);
 		else
-			return new ResponseEntity<Category>(theCategory,HttpStatus.NOT_FOUND);
+			return new ResponseEntity<Category>(theCategory,HttpStatus.NO_CONTENT);
 	}
 	
 	//get list of category
@@ -55,5 +70,19 @@ public class CategoryResource {
 		List<Category> categories = categoryService.getAllCategories();
 		return new ResponseEntity<List<Category>>(categories,HttpStatus.OK);
 	}
+	
+	
+	//update category
+	@PutMapping("/category/{id}")
+	public ResponseEntity<Category> updateCategory(@PathVariable("id") Long id,@RequestBody Category category)
+	{
+		Category theCategory = categoryService.updateCategoryById(id,category);
+		if(theCategory!=null)
+			return new ResponseEntity<Category>(theCategory,HttpStatus.OK);
+		else
+			return new ResponseEntity<Category>(theCategory,HttpStatus.BAD_REQUEST);
+	}
+	
+	
 	
 }
