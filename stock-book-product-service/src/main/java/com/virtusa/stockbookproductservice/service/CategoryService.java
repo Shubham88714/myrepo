@@ -1,13 +1,16 @@
 package com.virtusa.stockbookproductservice.service;
 
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 import java.util.Optional;
 
-import org.apache.logging.log4j.Logger;
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.virtusa.stockbookproductservice.domain.Category;
+import com.virtusa.stockbookproductservice.exception.CategoryDeleteNotValidException;
 import com.virtusa.stockbookproductservice.repository.ICategoryRepository;
 
 @Service
@@ -23,34 +26,37 @@ public class CategoryService {
 		return categoryRepository.save(category);
 	}
 
-	// delete by id
+	// delete by id------------------try and catch 
 	public Category deleteCategory(Long id) {
 		Category theCategory = null;
 		Optional<Category> optCategory = categoryRepository.findById(id);
 		if (optCategory.isPresent()) {
 			theCategory = optCategory.get();
-			
-			categoryRepository.delete(theCategory);
+		
+			try {
+				categoryRepository.delete(theCategory);
+			} catch (Exception e) {
+				
+					throw new CategoryDeleteNotValidException("you have to first delete the products of this category");
+			}
 		}
 	
 		return theCategory;
 	}
 
-	// update by id
-	public Category updateCategory(Category category) {
-		Category theCategory = null;
-		Optional<Category> optCategory = categoryRepository.findById(category.getId());
-
-		if (optCategory.isPresent()) {
-			theCategory = optCategory.get();
-			theCategory.setName(category.getName());
-
-			return categoryRepository.save(theCategory);
-		}
-		return theCategory;
-	}
+	/*
+	 * // update by id public Category updateCategory(Category category) { Category
+	 * theCategory = null; Optional<Category> optCategory =
+	 * categoryRepository.findById(category.getId());
+	 * 
+	 * if (optCategory.isPresent()) { theCategory = optCategory.get();
+	 * theCategory.setName(category.getName());
+	 * 
+	 * return categoryRepository.save(theCategory); } return theCategory; }
+	 */
 
 	// get list of saved category
+	@Transactional
 	public List<Category> getAllCategories() {
 		return categoryRepository.findAll();
 	}
@@ -66,6 +72,7 @@ public class CategoryService {
 		return theCategory;
 	}
 
+	//update
 	public Category updateCategoryById(Long id,Category category) {
 		Category theCategory = null;
 		Optional<Category> optCategory = categoryRepository.findById(id);

@@ -1,5 +1,6 @@
 package com.virtusa.stockbookproductservice.domain;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -35,7 +36,9 @@ public class Product {
 	@Column(name = "description")
 	private String description;
 
-	@ManyToOne(fetch=FetchType.LAZY)
+	@ManyToOne(fetch=FetchType.EAGER,
+			cascade= {CascadeType.DETACH,CascadeType.MERGE,
+					CascadeType.REFRESH})
 	@JoinColumn(name = "category_id")
 	private Category category;
 

@@ -9,8 +9,11 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
  * @author shshubham
@@ -29,8 +32,13 @@ public class Category {
 	@Column(name = "name")
 	private String name;
 
-	@OneToMany(mappedBy = "category",fetch=FetchType.EAGER)
+	@OneToMany(mappedBy = "category",fetch=FetchType.LAZY)
 	private List<Product> products;
+	
+	
+	@OneToMany(fetch=FetchType.LAZY)
+	@JoinColumn(name="product_id")
+	private List<Stock> stockList;
 
 	public Long getId() {
 		return id;
@@ -44,14 +52,17 @@ public class Category {
 		return name;
 	}
 
+	
 	public void setName(String name) {
 		this.name = name;
 	}
 
+	@JsonIgnore
 	public List<Product> getProducts() {
 		return products;
 	}
 
+	@JsonIgnore
 	public void setProducts(List<Product> products) {
 		this.products = products;
 	}
@@ -76,11 +87,17 @@ public class Category {
 		this.id= id;
 	}
 	
-	
-	
+	public List<Stock> getStockList() {
+		return stockList;
+	}
+
+	public void setStockList(List<Stock> stockList) {
+		this.stockList = stockList;
+	}
+
 	@Override
 	public String toString() {
-		return "Category [id=" + id + ", name=" + name + ", products=" + products + "]";
+		return "Category [id=" + id + ", name=" + name +  "]";
 	}
 
 	// support for bi-directional link
@@ -91,6 +108,15 @@ public class Category {
 		products.add(product);
 
 		product.setCategory(this);
+	}
+	
+	//to add the stock for a product
+	public void addStock(Stock stock)
+	{
+		if(stockList==null)
+			stockList = new ArrayList<Stock>();
+		
+		stockList.add(stock);
 	}
 
 }

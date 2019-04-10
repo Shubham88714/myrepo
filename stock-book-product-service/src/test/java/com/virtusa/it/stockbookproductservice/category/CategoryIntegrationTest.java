@@ -31,7 +31,7 @@ import com.virtusa.stockbookproductservice.service.CategoryService;
 @RunWith(SpringRunner.class)
 @ActiveProfiles("test")
 @SpringBootTest(classes = { StockBookProductServiceApplication.class })
-public class CategoryItTest {
+public class CategoryIntegrationTest {
 
 	@Autowired
 	WebApplicationContext wac;
@@ -123,9 +123,32 @@ public class CategoryItTest {
 	public void deleteById() throws Exception {
 		String uri = getUrlAfterSaving(new Category("z"));
 
-		mockMvc.perform(MockMvcRequestBuilders.delete(uri)).andExpect(MockMvcResultMatchers.status().isOk())
+		mockMvc.perform(MockMvcRequestBuilders.delete(uri)).andExpect(MockMvcResultMatchers.status().isNoContent())
 				.andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_UTF8));
 		
 	}
+	
+// negative test cases
+	@Test
+	public void getByWrongid() throws Exception
+	{
+		mockMvc.perform(MockMvcRequestBuilders.get("/api/category/45784"))
+		.andExpect(MockMvcResultMatchers.status().isBadRequest());
+	}
+	
+	@Test
+	public void deleteCategoryByWrongId() throws Exception
+	{
+		mockMvc.perform(MockMvcRequestBuilders.delete("/api/category/45784"))
+		.andExpect(MockMvcResultMatchers.status().isBadRequest());
+	}
 
+	@Test
+	public void updateCategoryByWrongId() throws Exception
+	{
+		Category category = new Category(1L, "f");
+	
+		mockMvc.perform(MockMvcRequestBuilders.put("/api/category/468546")
+			.contentType(MediaType.APPLICATION_JSON).content(new Gson().toJson(category)));
+	}
 }

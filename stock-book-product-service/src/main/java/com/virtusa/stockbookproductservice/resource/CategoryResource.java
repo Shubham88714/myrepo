@@ -32,11 +32,8 @@ public class CategoryResource {
 	public ResponseEntity<String> saveCategory(@RequestBody  Category category) throws URISyntaxException
 	{
 		Category theCategory = categoryService.saveCategory(category);
-		if(theCategory!=null)
-			return ResponseEntity.created(new URI("/api/category/"+theCategory.getId())).build();
 		
-		else
-			return ResponseEntity.badRequest().build();
+			return ResponseEntity.created(new URI("/api/category/"+theCategory.getId())).build();
 	}
 	
 	//get by id
@@ -58,9 +55,9 @@ public class CategoryResource {
 	{
 		Category theCategory = categoryService.deleteCategory(id);
 		if(theCategory!=null)
-			return new ResponseEntity<Category>(theCategory,HttpStatus.OK);
-		else
 			return new ResponseEntity<Category>(theCategory,HttpStatus.NO_CONTENT);
+		else
+			return new ResponseEntity<Category>(theCategory,HttpStatus.BAD_REQUEST);
 	}
 	
 	//get list of category
