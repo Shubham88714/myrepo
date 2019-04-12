@@ -36,10 +36,6 @@ public class Category {
 	private List<Product> products;
 	
 	
-	@OneToMany(fetch=FetchType.LAZY)
-	@JoinColumn(name="product_id")
-	private List<Stock> stockList;
-
 	public Long getId() {
 		return id;
 	}
@@ -62,7 +58,7 @@ public class Category {
 		return products;
 	}
 
-	@JsonIgnore
+	
 	public void setProducts(List<Product> products) {
 		this.products = products;
 	}
@@ -87,13 +83,8 @@ public class Category {
 		this.id= id;
 	}
 	
-	public List<Stock> getStockList() {
-		return stockList;
-	}
-
-	public void setStockList(List<Stock> stockList) {
-		this.stockList = stockList;
-	}
+	
+	
 
 	@Override
 	public String toString() {
@@ -110,13 +101,5 @@ public class Category {
 		product.setCategory(this);
 	}
 	
-	//to add the stock for a product
-	public void addStock(Stock stock)
-	{
-		if(stockList==null)
-			stockList = new ArrayList<Stock>();
-		
-		stockList.add(stock);
-	}
-
+	
 }

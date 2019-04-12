@@ -8,8 +8,16 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="stock_details")
+@Table(name = "stock_details")
 public class Stock {
+
+	@Override
+	public String toString() {
+		return "Stock [id=" + id + ", date=" + date + ", quantity=" + quantity + ", manufacturer=" + manufacturer
+				+ ", costPrice=" + costPrice + ", sellingPrice=" + sellingPrice + ", discount=" + discount
+				+ ", totalCp=" + totalCp + ", gst=" + gst + ", threshold=" + threshold + ", productId=" + productId
+				+ "]";
+	}
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,26 +36,43 @@ public class Stock {
 	@Column(name = "cost_price")
 	private Double costPrice;
 
-	@Column(name="selling_price")
+	@Column(name = "selling_price")
 	private Double sellingPrice;
 
-	
-	@Column(name="discount")
-	private float discount;
-	
-	@Column(name="total_cp")
+	@Column(name = "discount")
+	private Float discount;
+
+	@Column(name = "total_cp")
 	private Double totalCp;
-	
-	@Column(name="gst")
-	private float gst;
-	
-	@Column(name="threshold")
+
+	@Column(name = "gst")
+	private Float gst;
+
+	@Column(name = "threshold")
 	private Long threshold;
 
+	@Column(name = "product_id")
+	private Long productId;
 
-	
-	
-	
+	public Stock() {
+
+	}
+
+	public Stock(Long id, String date, Long quantity, String manufacturer, Double costPrice, Double sellingPrice,
+			float discount, Double totalCp, float gst, Long threshold, Long productId) {
+		this.id = id;
+		this.date = date;
+		this.quantity = quantity;
+		this.manufacturer = manufacturer;
+		this.costPrice = costPrice;
+		this.sellingPrice = sellingPrice;
+		this.discount = discount;
+		this.totalCp = totalCp;
+		this.gst = gst;
+		this.threshold = threshold;
+		this.productId = productId;
+	}
+
 	public Long getId() {
 		return id;
 	}
@@ -96,11 +121,11 @@ public class Stock {
 		this.sellingPrice = sellingPrice;
 	}
 
-	public float getDiscount() {
+	public Float getDiscount() {
 		return discount;
 	}
 
-	public void setDiscount(float discount) {
+	public void setDiscount(Float discount) {
 		this.discount = discount;
 	}
 
@@ -112,11 +137,11 @@ public class Stock {
 		this.totalCp = totalCp;
 	}
 
-	public float getGst() {
+	public Float getGst() {
 		return gst;
 	}
 
-	public void setGst(float gst) {
+	public void setGst(Float gst) {
 		this.gst = gst;
 	}
 
@@ -127,7 +152,13 @@ public class Stock {
 	public void setThreshold(Long threshold) {
 		this.threshold = threshold;
 	}
-	
-	
-	
+
+	public Long getProductId() {
+		return productId;
+	}
+
+	public void setProductId(Long productService) {
+		this.productId = productService;
+	}
+
 }

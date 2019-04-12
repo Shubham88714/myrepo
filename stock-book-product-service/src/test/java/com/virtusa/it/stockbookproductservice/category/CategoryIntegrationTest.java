@@ -57,6 +57,7 @@ public class CategoryIntegrationTest {
 	}
 
 	// save category
+
 	@Test
 	public void saveCategory() throws Exception {
 		Category category = new Category("a");
@@ -71,6 +72,7 @@ public class CategoryIntegrationTest {
 	}
 
 	// get list of categories
+
 	@Test
 	public void getListOfCategory() throws Exception {
 		Category category = new Category("c");
@@ -86,12 +88,13 @@ public class CategoryIntegrationTest {
 				.andExpect(MockMvcResultMatchers.jsonPath("$[1].id", is(2)))
 				.andExpect(MockMvcResultMatchers.jsonPath("$[1].name", is("b")))
 
-				.andExpect(MockMvcResultMatchers.jsonPath("$[2].id", is(4)))
-				.andExpect(MockMvcResultMatchers.jsonPath("$[2].name", is("c")));
+				.andExpect(MockMvcResultMatchers.jsonPath("$[2].id", is(3)))
+				.andExpect(MockMvcResultMatchers.jsonPath("$[2].name", is("z")));
 
 	}
 
 	// get category by id
+
 	@Test
 	public void getCategoryByid() throws Exception {
 		String uri = getUrlAfterSaving(new Category("d"));
@@ -125,30 +128,28 @@ public class CategoryIntegrationTest {
 
 		mockMvc.perform(MockMvcRequestBuilders.delete(uri)).andExpect(MockMvcResultMatchers.status().isNoContent())
 				.andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_UTF8));
-		
+
 	}
-	
-// negative test cases
+
+	// negative test cases
+
 	@Test
-	public void getByWrongid() throws Exception
-	{
+	public void getByWrongid() throws Exception {
 		mockMvc.perform(MockMvcRequestBuilders.get("/api/category/45784"))
-		.andExpect(MockMvcResultMatchers.status().isBadRequest());
-	}
-	
-	@Test
-	public void deleteCategoryByWrongId() throws Exception
-	{
-		mockMvc.perform(MockMvcRequestBuilders.delete("/api/category/45784"))
-		.andExpect(MockMvcResultMatchers.status().isBadRequest());
+				.andExpect(MockMvcResultMatchers.status().isBadRequest());
 	}
 
 	@Test
-	public void updateCategoryByWrongId() throws Exception
-	{
+	public void deleteCategoryByWrongId() throws Exception {
+		mockMvc.perform(MockMvcRequestBuilders.delete("/api/category/45784"))
+				.andExpect(MockMvcResultMatchers.status().isBadRequest());
+	}
+
+	@Test
+	public void updateCategoryByWrongId() throws Exception {
 		Category category = new Category(1L, "f");
-	
-		mockMvc.perform(MockMvcRequestBuilders.put("/api/category/468546")
-			.contentType(MediaType.APPLICATION_JSON).content(new Gson().toJson(category)));
+
+		mockMvc.perform(MockMvcRequestBuilders.put("/api/category/468546").contentType(MediaType.APPLICATION_JSON)
+				.content(new Gson().toJson(category)));
 	}
 }

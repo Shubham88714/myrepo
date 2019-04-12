@@ -58,7 +58,10 @@ public class CategoryService {
 	// get list of saved category
 	@Transactional
 	public List<Category> getAllCategories() {
-		return categoryRepository.findAll();
+		List<Category> categories = categoryRepository.findAll();
+		categories.forEach((n) -> n.getProducts());
+		categories.forEach((n) -> System.out.println(n));
+		return categories;
 	}
 
 	// get list by id
